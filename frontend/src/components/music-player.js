@@ -16,15 +16,18 @@ import {
 import { cn } from '@/lib/utils';
 import { useYouTubePlayer } from '@/context/youtube-player-context';
 
-export function MusicPlayer({ track = mockTrack, className }) {
+export function MusicPlayer({ className }) {
   const {
     isPlaying,
     progress,
     volume,
     duration,
+    currentTrackInfo,
     togglePlay,
     seekTo,
     setVolume,
+    skipToNext,
+    skipToPrevious,
   } = useYouTubePlayer();
   const [isMuted, setIsMuted] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -55,7 +58,12 @@ export function MusicPlayer({ track = mockTrack, className }) {
           {/* Player Controls */}
           <div className="flex flex-col items-center space-y-4">
             <div className="flex items-center space-x-6">
-              <Button variant="ghost" size="icon" className="h-12 w-12">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-12 w-12"
+                onClick={skipToPrevious}
+              >
                 <SkipBack className="h-6 w-6" />
               </Button>
               <Button onClick={togglePlay} size="icon" className="h-16 w-16">
@@ -65,7 +73,12 @@ export function MusicPlayer({ track = mockTrack, className }) {
                   <Play className="h-8 w-8 ml-1" />
                 )}
               </Button>
-              <Button variant="ghost" size="icon" className="h-12 w-12">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-12 w-12"
+                onClick={skipToNext}
+              >
                 <SkipForward className="h-6 w-6" />
               </Button>
             </div>
@@ -102,21 +115,23 @@ export function MusicPlayer({ track = mockTrack, className }) {
           <div className="flex items-center space-x-4">
             <div className="h-16 w-16 rounded-md bg-muted">
               <img
-                src={track.coverUrl}
-                alt={track.title}
+                src={currentTrackInfo.coverUrl}
+                alt={currentTrackInfo.title}
                 className="w-full h-full object-cover rounded-md"
               />
             </div>
-            <div>
-              <h3 className="font-medium">{track.title}</h3>
-              <p className="text-sm text-muted-foreground">{track.artist}</p>
+            <div className="max-w-[200px]">
+              <h3 className="font-medium truncate">{currentTrackInfo.title}</h3>
+              <p className="text-sm text-muted-foreground truncate">
+                {currentTrackInfo.artist}
+              </p>
             </div>
           </div>
 
           {/* Player Controls */}
           <div className="hidden md:flex flex-col items-center space-y-2 flex-1 max-w-xl mx-8">
             <div className="flex items-center space-x-4">
-              <Button variant="ghost" size="icon">
+              <Button variant="ghost" size="icon" onClick={skipToPrevious}>
                 <SkipBack className="h-5 w-5" />
               </Button>
               <Button onClick={togglePlay} size="icon">
@@ -126,7 +141,7 @@ export function MusicPlayer({ track = mockTrack, className }) {
                   <Play className="h-5 w-5" />
                 )}
               </Button>
-              <Button variant="ghost" size="icon">
+              <Button variant="ghost" size="icon" onClick={skipToNext}>
                 <SkipForward className="h-5 w-5" />
               </Button>
             </div>
@@ -185,7 +200,12 @@ export function MusicPlayer({ track = mockTrack, className }) {
           <div className="md:hidden mt-4 space-y-6">
             <div className="flex flex-col items-center space-y-4">
               <div className="flex items-center space-x-6">
-                <Button variant="ghost" size="icon" className="h-12 w-12">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-12 w-12"
+                  onClick={skipToPrevious}
+                >
                   <SkipBack className="h-6 w-6" />
                 </Button>
                 <Button onClick={togglePlay} size="icon" className="h-16 w-16">
@@ -195,7 +215,12 @@ export function MusicPlayer({ track = mockTrack, className }) {
                     <Play className="h-8 w-8 ml-1" />
                   )}
                 </Button>
-                <Button variant="ghost" size="icon" className="h-12 w-12">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-12 w-12"
+                  onClick={skipToNext}
+                >
                   <SkipForward className="h-6 w-6" />
                 </Button>
               </div>
@@ -218,11 +243,3 @@ export function MusicPlayer({ track = mockTrack, className }) {
     </div>
   );
 }
-
-// Mock data - replace with real data later
-const mockTrack = {
-  title: 'Untitled Track',
-  artist: 'Unknown Artist',
-  coverUrl: 'https://placehold.co/400',
-  duration: 225, // in seconds
-};
