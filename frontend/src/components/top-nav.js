@@ -1,6 +1,7 @@
 'use client';
 
 import { Menu, User } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { Button } from './ui/button';
 import {
   Sheet,
@@ -20,6 +21,8 @@ import {
 } from './ui/dropdown-menu';
 
 export function TopNav() {
+  const router = useRouter();
+
   return (
     <div className="border-b">
       <div className="flex h-16 items-center px-4">
@@ -45,8 +48,9 @@ export function TopNav() {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Profile</DropdownMenuItem>
-              <DropdownMenuItem>Settings</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => router.push('/settings')}>
+                Settings
+              </DropdownMenuItem>
               <DropdownMenuItem>Sign out</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

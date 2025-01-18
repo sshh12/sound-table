@@ -12,20 +12,20 @@ export function UserProvider({ children }) {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    if (localStorage.getItem('sound-table-token')) {
-      api
-        .getCurrentUser()
-        .then(setUser)
-        .then(fetchData)
-        .catch((e) => {
-          if (e.message.includes('token')) {
-            localStorage.removeItem('sound-table-token');
-            window.location.href = '/';
-          }
-        });
-    } else {
-      api.createAccount().then(setUser).then(fetchData);
-    }
+    // if (localStorage.getItem('sound-table-token')) {
+    //   api
+    //     .getCurrentUser()
+    //     .then(setUser)
+    //     .then(fetchData)
+    //     .catch((e) => {
+    //       if (e.message.includes('token')) {
+    //         localStorage.removeItem('sound-table-token');
+    //         window.location.href = '/';
+    //       }
+    //     });
+    // } else {
+    //   api.createAccount().then(setUser).then(fetchData);
+    // }
   }, []);
 
   const refreshUser = async () => {

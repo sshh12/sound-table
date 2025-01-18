@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { Button } from './ui/button';
 import { ScrollArea } from './ui/scroll-area';
-import { Plus } from 'lucide-react';
+import { Plus, PlayCircle } from 'lucide-react';
 
 // Mock data - replace with real data later
 const mockPlaylists = [
@@ -16,6 +16,13 @@ export function Sidebar() {
   return (
     <div className="w-64 h-full border-r bg-background">
       <div className="flex flex-col h-full p-4 space-y-4">
+        <Link href="/">
+          <Button className="w-full justify-start" variant="secondary">
+            <PlayCircle className="mr-2 h-4 w-4" />
+            Now Playing
+          </Button>
+        </Link>
+
         <Link href="/new-playlist">
           <Button className="w-full justify-start" variant="outline">
             <Plus className="mr-2 h-4 w-4" />

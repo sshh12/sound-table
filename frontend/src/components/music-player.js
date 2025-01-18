@@ -14,17 +14,38 @@ import {
   Minimize2,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useYouTubePlayer } from '@/context/youtube-player-context';
 
 export function MusicPlayer({ track = mockTrack, className }) {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [volume, setVolume] = useState(100);
+  const {
+    isPlaying,
+    progress,
+    volume,
+    duration,
+    togglePlay,
+    seekTo,
+    setVolume,
+  } = useYouTubePlayer();
   const [isMuted, setIsMuted] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [prevVolume, setPrevVolume] = useState(100);
 
-  const togglePlay = () => setIsPlaying(!isPlaying);
-  const toggleMute = () => setIsMuted(!isMuted);
+  const toggleMute = () => {
+    if (isMuted) {
+      setVolume(prevVolume);
+    } else {
+      setPrevVolume(volume);
+      setVolume(0);
+    }
+    setIsMuted(!isMuted);
+  };
   const toggleExpand = () => setIsExpanded(!isExpanded);
+
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
 
   // Mobile player (in-page)
   if (className) {
@@ -54,11 +75,11 @@ export function MusicPlayer({ track = mockTrack, className }) {
                 max={100}
                 step={1}
                 className="w-full"
-                onValueChange={(value) => setProgress(value[0])}
+                onValueChange={(value) => seekTo(value[0])}
               />
               <div className="flex justify-between text-sm text-muted-foreground">
-                <span>0:00</span>
-                <span>3:45</span>
+                <span>{formatTime((progress / 100) * duration)}</span>
+                <span>{formatTime(duration)}</span>
               </div>
             </div>
           </div>
@@ -110,15 +131,19 @@ export function MusicPlayer({ track = mockTrack, className }) {
               </Button>
             </div>
             <div className="w-full flex items-center space-x-2">
-              <span className="text-sm text-muted-foreground">0:00</span>
+              <span className="text-sm text-muted-foreground">
+                {formatTime((progress / 100) * duration)}
+              </span>
               <Slider
                 value={[progress]}
                 max={100}
                 step={1}
                 className="flex-1"
-                onValueChange={(value) => setProgress(value[0])}
+                onValueChange={(value) => seekTo(value[0])}
               />
-              <span className="text-sm text-muted-foreground">3:45</span>
+              <span className="text-sm text-muted-foreground">
+                {formatTime(duration)}
+              </span>
             </div>
           </div>
 
@@ -132,7 +157,7 @@ export function MusicPlayer({ track = mockTrack, className }) {
               )}
             </Button>
             <Slider
-              value={[isMuted ? 0 : volume]}
+              value={[volume]}
               max={100}
               step={1}
               className="w-24"
@@ -179,11 +204,11 @@ export function MusicPlayer({ track = mockTrack, className }) {
                   value={[progress]}
                   max={100}
                   step={1}
-                  onValueChange={(value) => setProgress(value[0])}
+                  onValueChange={(value) => seekTo(value[0])}
                 />
                 <div className="flex justify-between text-sm text-muted-foreground">
-                  <span>0:00</span>
-                  <span>3:45</span>
+                  <span>{formatTime((progress / 100) * duration)}</span>
+                  <span>{formatTime(duration)}</span>
                 </div>
               </div>
             </div>
