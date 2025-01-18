@@ -12,9 +12,18 @@ import {
   VolumeX,
   Maximize2,
   Minimize2,
+  ThumbsUp,
+  ThumbsDown,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useYouTubePlayer } from '@/context/youtube-player-context';
+import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from './ui/dropdown-menu';
 
 export function MusicPlayer({ className }) {
   const {
@@ -120,11 +129,34 @@ export function MusicPlayer({ className }) {
                 className="w-full h-full object-cover rounded-md"
               />
             </div>
-            <div className="max-w-[200px]">
-              <h3 className="font-medium truncate">{currentTrackInfo.title}</h3>
-              <p className="text-sm text-muted-foreground truncate">
-                {currentTrackInfo.artist}
-              </p>
+            <div className="flex items-center space-x-4">
+              <div className="max-w-[200px]">
+                <h3 className="font-medium truncate">
+                  {currentTrackInfo.title}
+                </h3>
+                <p className="text-sm text-muted-foreground truncate">
+                  {currentTrackInfo.artist}
+                </p>
+              </div>
+              <div className="flex items-center space-x-1">
+                <Button variant="ghost" size="icon">
+                  <ThumbsUp className="h-4 w-4" />
+                </Button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="icon">
+                      <ThumbsDown className="h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="center">
+                    <DropdownMenuItem>Never play this again</DropdownMenuItem>
+                    <DropdownMenuItem>Not today</DropdownMenuItem>
+                    <DropdownMenuItem>Too slow</DropdownMenuItem>
+                    <DropdownMenuItem>Not my style</DropdownMenuItem>
+                    <DropdownMenuItem>Bad quality</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
             </div>
           </div>
 
@@ -163,21 +195,30 @@ export function MusicPlayer({ className }) {
           </div>
 
           {/* Volume Control */}
-          <div className="hidden md:flex items-center space-x-2">
-            <Button variant="ghost" size="icon" onClick={toggleMute}>
-              {isMuted ? (
-                <VolumeX className="h-5 w-5" />
-              ) : (
-                <Volume2 className="h-5 w-5" />
-              )}
-            </Button>
-            <Slider
-              value={[volume]}
-              max={100}
-              step={1}
-              className="w-24"
-              onValueChange={(value) => setVolume(value[0])}
-            />
+          <div className="hidden md:flex items-center">
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="ghost" size="icon" onClick={toggleMute}>
+                  {isMuted ? (
+                    <VolumeX className="h-5 w-5" />
+                  ) : (
+                    <Volume2 className="h-5 w-5" />
+                  )}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-2" side="top">
+                <div className="h-24">
+                  <Slider
+                    value={[volume]}
+                    max={100}
+                    step={1}
+                    orientation="vertical"
+                    className="h-full"
+                    onValueChange={(value) => setVolume(value[0])}
+                  />
+                </div>
+              </PopoverContent>
+            </Popover>
           </div>
 
           {/* Mobile expand button */}
