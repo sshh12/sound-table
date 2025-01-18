@@ -3,13 +3,7 @@
 import { Menu, User } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Button } from './ui/button';
-import {
-  Sheet,
-  SheetContent,
-  SheetTrigger,
-  SheetHeader,
-  SheetTitle,
-} from './ui/sheet';
+import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
 import { Sidebar } from './sidebar';
 import {
   DropdownMenu,
@@ -39,21 +33,13 @@ export function TopNav() {
         </Sheet>
 
         <div className="ml-auto flex items-center space-x-4">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon">
-                <User className="h-5 w-5" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => router.push('/settings')}>
-                Settings
-              </DropdownMenuItem>
-              <DropdownMenuItem>Sign out</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => router.push('/settings')}
+          >
+            <User className="h-5 w-5" />
+          </Button>
         </div>
       </div>
     </div>

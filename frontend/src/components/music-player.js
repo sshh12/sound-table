@@ -198,7 +198,7 @@ export function MusicPlayer({ className }) {
           <div className="hidden md:flex items-center">
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="ghost" size="icon" onClick={toggleMute}>
+                <Button variant="ghost" size="icon">
                   {isMuted ? (
                     <VolumeX className="h-5 w-5" />
                   ) : (
