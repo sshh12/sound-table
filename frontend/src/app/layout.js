@@ -1,28 +1,34 @@
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Inter } from 'next/font/google';
 import './globals.css';
+import { Providers } from '@/components/providers';
+import { Sidebar } from '@/components/sidebar';
+import { TopNav } from '@/components/top-nav';
+import { cn } from '@/lib/utils';
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-});
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
   title: 'Sound Table',
-  description: 'AI-powered playlists',
+  description: 'AI Music Player',
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+    <html lang="en" suppressHydrationWarning>
+      <body className={cn(inter.className, 'min-h-screen bg-background')}>
+        <Providers>
+          <div className="flex h-screen">
+            {/* Sidebar - hidden on mobile */}
+            <div className="hidden md:flex">
+              <Sidebar />
+            </div>
+            {/* Main content */}
+            <div className="flex-1 flex flex-col">
+              <TopNav />
+              <main className="flex-1 overflow-auto">{children}</main>
+            </div>
+          </div>
+        </Providers>
       </body>
     </html>
   );
