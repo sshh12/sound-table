@@ -121,16 +121,16 @@ export function MusicPlayer({ className }) {
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between">
           {/* Track Info */}
-          <div className="flex items-center space-x-4">
-            <div className="h-16 w-16 rounded-md bg-muted">
+          <div className="flex items-center min-w-0 flex-1 md:flex-none">
+            <div className="h-16 w-16 flex-shrink-0 rounded-md bg-muted">
               <img
                 src={currentTrackInfo.coverUrl}
                 alt={currentTrackInfo.title}
                 className="w-full h-full object-cover rounded-md"
               />
             </div>
-            <div className="flex items-center space-x-4">
-              <div className="max-w-[200px]">
+            <div className="flex items-center space-x-4 min-w-0 flex-1 px-4">
+              <div className="min-w-0 flex-1">
                 <h3 className="font-medium truncate">
                   {currentTrackInfo.title}
                 </h3>
@@ -138,7 +138,7 @@ export function MusicPlayer({ className }) {
                   {currentTrackInfo.artist}
                 </p>
               </div>
-              <div className="flex items-center space-x-1">
+              <div className="flex items-center space-x-1 flex-shrink-0">
                 <Button variant="ghost" size="icon">
                   <ThumbsUp className="h-4 w-4" />
                 </Button>
